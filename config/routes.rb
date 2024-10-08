@@ -31,4 +31,6 @@ Rails.application.routes.draw do
   end
 
   resources :audit_logs, only: [:index]
+
+  resources :notifications, only: [:index]
 end

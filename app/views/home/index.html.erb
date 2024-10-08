@@ -4,6 +4,7 @@
     <% if current_user.admin? %>
         <%= link_to 'View Users', users_path %>
         <%= link_to 'View Audit Logs', audit_logs_path %>
+        <%= link_to 'View Notifications', notifications_path %>
     <% end %>
 
     <% if current_user.user? %>
