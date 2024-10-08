@@ -3,12 +3,12 @@ class UsersController < ApplicationController
   before_action :authorize_admin!
 
   def index
-    @users = User.all # Or filter based on your needs
+    @users = User.all
   end
 
   def show
     @user = User.find(params[:id])
-    @folders = @user.folders.includes(:file_uploads) # Adjust this if needed
+    @folders = @user.folders.includes(:file_uploads)
   end
 
   private
