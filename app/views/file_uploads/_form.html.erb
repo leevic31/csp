@@ -12,6 +12,10 @@
       <%= form.select :permission, options_for_select([['Read Only', 'read-only'], ['Read Write', 'read-write']]), selected: @file_upload.permission %>
     </div>
     <div>
+      <%= form.label :folder_id, "Select Folder" %>
+      <%= form.collection_select :folder_id, current_user.folders, :id, :name, include_blank: true %>
+  </div>
+    <div>
       <%= form.submit "Upload File" %>
     </div>
   <% end %>

@@ -2,6 +2,7 @@ class FileUpload < ApplicationRecord
   belongs_to :user
   has_one_attached :file
   has_many :file_shares, dependent: :destroy
+  belongs_to :folder, optional: true
   
   validates :permission, inclusion: { in: %w[read-only read-write] }
 end

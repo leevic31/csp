@@ -16,6 +16,7 @@ class FileUploadsController < ApplicationController
   
     def create
         if current_user.user?
+            @folder = Folder.find(params[:folder_id]) if params[:folder_id]
             @file_upload = current_user.file_uploads.build(file_upload_params)
 
             if @file_upload.save
@@ -24,7 +25,7 @@ class FileUploadsController < ApplicationController
                 render :new
             end
         else
-            redirect_to file_uploads_path, alert: "Not authorized to upload this file"
+            redirect_to folder_file_uploads_path(@folder), alert: "Not authorized to upload this file"
         end
 
     end
@@ -61,6 +62,6 @@ class FileUploadsController < ApplicationController
     end
   
     def file_upload_params
-      params.require(:file_upload).permit(:file, :name, :permission)
+      params.require(:file_upload).permit(:file, :name, :permission, :folder_id)
     end
 end
