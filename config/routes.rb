@@ -16,8 +16,10 @@ Rails.application.routes.draw do
       member do
         get 'download'
       end
+
+      resources :file_shares, only: [:new, :create], controller: 'file_shares'
     end
   end
 
-  resources :file_shares, only: [:create]
+  # resources :file_shares, only: [:create]
 end

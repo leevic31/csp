@@ -1,10 +1,6 @@
 <h1>Share File</h1>
 
-<%= form_with model: @file_share, local: true do |form| %>
-  <div>
-    <%= form.label :file_upload_id, "Select File" %>
-    <%= form.collection_select :file_upload_id, current_user.file_uploads, :id, :name, include_blank: true %>
-  </div>
+<%= form_with model: @file_share, url: folder_file_upload_file_shares_path(@file_upload.folder, @file_upload), local: true do |form| %>
   <div>
     <%= form.label :user_id, "Select User" %>
     <%= form.collection_select :user_id, User.where.not(id: current_user.id), :id, :email, include_blank: true %>
@@ -14,4 +10,4 @@
   </div>
 <% end %>
 
-<%= link_to "Back", file_uploads_path %>
+<%= link_to "Back", folder_file_uploads_path(@file_upload.folder) %>

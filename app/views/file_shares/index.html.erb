@@ -3,11 +3,8 @@
 <ul>
   <% current_user.file_shares.includes(:file_upload).each do |file_share| %>
     <li>
-      <%= file_share.file_upload.name %>
+      <%= file_share.file_upload.name %> shared with you by <%= file_share.user.email %>
       <%= link_to "Download", download_file_upload_path(file_share.file_upload) %>
-      <% if current_user.admin? %>
-        <%= link_to "Delete", file_share_path(file_share), method: :delete, data: { confirm: "Are you sure?" } %>
-      <% end %>
     </li>
   <% end %>
 </ul>
