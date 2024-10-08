@@ -5,7 +5,7 @@
 <ul>
     <% @file_uploads.each do |file_upload| %>
         <li>
-            <%= file_upload.name %>
+            <%= link_to file_upload.name, folder_file_upload_path(file_upload.folder, file_upload) %>
             <%= link_to "Download", download_folder_file_upload_path(file_upload.folder, file_upload) %>
         </li>
     <% end %>

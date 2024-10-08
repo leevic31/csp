@@ -1,0 +1,23 @@
+<h1><%= @file_upload.name %></h1>
+
+<p>
+    <strong>File:</strong>
+    <%= @file_upload.file.filename %>
+</p>
+
+<p>
+    <strong>Current Permission:</strong>
+    <%= @file_upload.permission %>
+</p>
+
+<%= form_with(model: @file_upload, url: folder_file_upload_path(@file_upload.folder, @file_upload), method: :patch) do |form| %>
+    <div>
+        <%= form.label :permission %>
+        <%= form.select :permission, options_for_select(['read-only', 'read-write'], @file_upload.permission) %>
+    </div>
+    <div>
+        <%= form.submit "Update Permission" %>
+    </div>
+<% end %>
+
+<%= link_to 'Back', folder_file_uploads_path(@file_upload.folder) %>

@@ -1,6 +1,6 @@
 class FileUploadsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_file_upload, only: [:destroy, :download, :update]
+    before_action :set_file_upload, only: [:destroy, :download, :update, :show]
   
     def index
         @folder = Folder.find(params[:folder_id])
@@ -56,10 +56,13 @@ class FileUploadsController < ApplicationController
 
     def update        
         if @file_upload.user == current_user && @file_upload.update(file_upload_params)
-            redirect_to file_uploads_path, notice: "File updated successfully."
-        else
-            render :edit
+            redirect_to folder_file_upload_path(@file_upload.folder, @file_upload), notice: "File updated successfully."        else
+            render :show
         end
+    end
+
+    def show
+        @file_upload
     end
   
     private

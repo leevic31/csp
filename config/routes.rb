@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :folders do
-    resources :file_uploads, only: [:create, :index, :destroy, :new] do
+    resources :file_uploads, only: [:create, :index, :destroy, :new, :show, :update] do
       member do
         get 'download'
       end
