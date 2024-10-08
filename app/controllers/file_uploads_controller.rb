@@ -3,6 +3,7 @@ class FileUploadsController < ApplicationController
     before_action :set_file_upload, only: [:destroy, :download, :update]
   
     def index
+        @folder = Folder.find(params[:folder_id])
         @file_uploads = if current_user.admin?
                             FileUpload.all
                         elsif current_user.user?
@@ -13,21 +14,27 @@ class FileUploadsController < ApplicationController
                             []
                         end
     end
+
+    def new
+        @folder = Folder.find(params[:folder_id])
+        @file_upload = @folder.file_uploads.build
+    end
   
     def create
-        if current_user.user?
-            @folder = Folder.find(params[:folder_id]) if params[:folder_id]
-            @file_upload = current_user.file_uploads.build(file_upload_params)
+        if current_user.user?           
+            @folder = Folder.find(params[:folder_id])
+
+            @file_upload = @folder.file_uploads.build(file_upload_params)
+            @file_upload.user = current_user
 
             if @file_upload.save
-                redirect_to file_uploads_path, notice: "File uploaded successfully."
+                redirect_to folder_file_uploads_path(@folder), notice: "File uploaded successfully."
             else
-                render :new
+                redirect_to folder_file_uploads_path(@folder), alert: "Unsuccessfully uploaded file"
             end
         else
             redirect_to folder_file_uploads_path(@folder), alert: "Not authorized to upload this file"
         end
-
     end
   
     def destroy
@@ -41,7 +48,7 @@ class FileUploadsController < ApplicationController
 
     def download
         if @file_upload.user == current_user || @file_upload.file_shares.exists?(user: current_user)
-            send_file @file_upload.file.download, filename: @file_upload.name, disposition: 'attachment'
+            send_data @file_upload.file.download, filename: @file_upload.name, disposition: 'attachment'
         else
             redirect_to file_uploads_path, alert: "You are not authorized to download this file."
         end

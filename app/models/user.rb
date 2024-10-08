@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   has_many :file_uploads, dependent: :destroy
   has_many :folders, dependent: :destroy
+  has_many :file_shares, dependent: :destroy
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable

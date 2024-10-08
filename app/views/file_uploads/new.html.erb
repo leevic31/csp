@@ -1,0 +1,21 @@
+<h1>Upload File to <%= @folder.name %></h1>
+
+<%= form_with model: [@folder, @file_upload], local: true do |form| %>
+  <div>
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+  <div>
+    <%= form.label :file %>
+    <%= form.file_field :file %>
+  </div>
+  <div>
+    <%= form.label :permission %>
+    <%= form.select :permission, options_for_select([['Read-Only', 'read-only'], ['Read-Write', 'read-write']]) %>
+  </div>
+  <div>
+    <%= form.submit 'Upload' %>
+  </div>
+<% end %>
+
+<%= link_to "Back", folder_path(@folder) %>
