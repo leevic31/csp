@@ -7,12 +7,12 @@ class FileSharesController < ApplicationController
             @file_share.user = current_user
         
             if @file_share.save
-              redirect_to file_uploads_path, notice: "File shared successfully."
+              redirect_to file_shares_path, notice: "File shared successfully."
             else
-              redirect_to file_uploads_path, alert: "Failed to share the file."
+              render :new
             end
         else
-            redirect_to file_uploads_path, alert: "Not authorized to share the file"
+            redirect_to file_shares_path, alert: "Not authorized to share the file"
         end
     end
   

@@ -1,0 +1,15 @@
+<h1>Shared Files</h1>
+
+<ul>
+  <% current_user.file_shares.includes(:file_upload).each do |file_share| %>
+    <li>
+      <%= file_share.file_upload.name %>
+      <%= link_to "Download", download_file_upload_path(file_share.file_upload) %>
+      <% if current_user.admin? %>
+        <%= link_to "Delete", file_share_path(file_share), method: :delete, data: { confirm: "Are you sure?" } %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to "Share a File", new_file_share_path %>
