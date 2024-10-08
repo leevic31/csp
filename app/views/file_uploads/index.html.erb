@@ -1,0 +1,26 @@
+<h1>Your Files</h1>
+
+<%= form_with model: FileUpload.new, local: true do |form| %>
+    <div>
+        <%= form.label :name %>
+        <%= form.text_field :name %>
+    </div>
+    <div>
+        <%= form.label :file %>
+        <%= form.file_field :file %>
+    </div>
+    <div>
+        <%= form.submit "Upload File" %>
+    </div>
+<% end %>
+
+<ul>
+    <% @file_uploads.each do |file_upload| %>
+        <li>
+            <%= file_upload.name %>
+            <% if current_user.admin? %>
+                <%= link_to "Delete", file_upload_path(file_upload), method: :delete, data: { confirm: "Are you sure?" } %>
+            <% end %>
+        </li>
+    <% end %>
+</ul>
