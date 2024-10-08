@@ -4,7 +4,6 @@
   <% current_user.file_shares.includes(:file_upload).each do |file_share| %>
     <li>
       <%= file_share.file_upload.name %> shared with you by <%= file_share.user.email %>
-      <%= link_to "Download", download_file_upload_path(file_share.file_upload) %>
     </li>
   <% end %>
 </ul>

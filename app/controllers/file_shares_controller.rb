@@ -9,7 +9,7 @@ class FileSharesController < ApplicationController
     def create
         if current_user.user?
             @file_share = FileShare.new(file_share_params)
-            @file_share.user = current_user
+            @file_share.permission = 'read-only'
         
             if @file_share.save
               redirect_to folder_file_uploads_path(@file_upload.folder), notice: "File shared successfully."

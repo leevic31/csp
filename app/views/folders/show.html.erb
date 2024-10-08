@@ -7,6 +7,7 @@
     <li>
       <%= link_to file_upload.name, folder_file_upload_path(file_upload.folder, file_upload) %>
       <%= link_to "Download", download_folder_file_upload_path(file_upload) %>
+      <%= link_to "Share", new_folder_file_upload_file_share_path(file_upload.folder, file_upload) %>
     </li>
   <% end %>
 </ul>
