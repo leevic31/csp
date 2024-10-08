@@ -11,8 +11,10 @@ class FoldersController < ApplicationController
   
     def create
         @folder = current_user.folders.build(folder_params)
+
         if @folder.save
-            redirect_to folder_file_uploads_path, notice: "Folder created successfully."
+            log_audit_action('create', 'Folder', @folder.id)
+            redirect_to folders_path, notice: "Folder created successfully."
         else
             render :new
         end

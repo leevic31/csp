@@ -12,9 +12,10 @@ class FileSharesController < ApplicationController
             @file_share.permission = 'read-only'
         
             if @file_share.save
-              redirect_to folder_file_uploads_path(@file_upload.folder), notice: "File shared successfully."
+                log_audit_action('create', 'FileShare', @file_share.id)
+                redirect_to folder_file_uploads_path(@file_upload.folder), notice: "File shared successfully."
             else
-              render :new
+                render :new
             end
         else
             redirect_to folder_file_uploads_path(@file_upload.folder), alert: "Not authorized to share this file."

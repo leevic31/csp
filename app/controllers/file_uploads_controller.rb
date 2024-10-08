@@ -23,11 +23,11 @@ class FileUploadsController < ApplicationController
     def create
         if current_user.user?           
             @folder = Folder.find(params[:folder_id])
-
             @file_upload = @folder.file_uploads.build(file_upload_params)
             @file_upload.user = current_user
 
             if @file_upload.save
+                log_audit_action('create', 'FileUpload', @file_upload.id)
                 redirect_to folder_file_uploads_path(@folder), notice: "File uploaded successfully."
             else
                 redirect_to folder_file_uploads_path(@folder), alert: "Unsuccessfully uploaded file"
@@ -40,6 +40,7 @@ class FileUploadsController < ApplicationController
     def destroy
         if @file_upload.user == current_user 
             @file_upload.destroy
+            log_audit_action('destroy', 'FileUpload', @file_upload.id)
             redirect_to file_uploads_path, notice: "File deleted successfully."
         else
             redirect_to file_uploads_path, alert: "Not authorized to delete this file"
@@ -49,6 +50,7 @@ class FileUploadsController < ApplicationController
     def download
         if @file_upload.user == current_user || @file_upload.file_shares.exists?(user: current_user)
             send_data @file_upload.file.download, filename: @file_upload.name, disposition: 'attachment'
+            log_audit_action('download', 'FileUpload', @file_upload.id)
         else
             redirect_to file_uploads_path, alert: "You are not authorized to download this file."
         end
@@ -56,7 +58,9 @@ class FileUploadsController < ApplicationController
 
     def update        
         if @file_upload.user == current_user && @file_upload.update(file_upload_params)
-            redirect_to folder_file_upload_path(@file_upload.folder, @file_upload), notice: "File updated successfully."        else
+            log_audit_action('permission update', 'FileUpload', @file_upload.id)
+            redirect_to folder_file_upload_path(@file_upload.folder, @file_upload), notice: "File updated successfully."        
+        else
             render :show
         end
     end
