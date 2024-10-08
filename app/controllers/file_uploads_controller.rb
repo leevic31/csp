@@ -35,7 +35,7 @@ class FileUploadsController < ApplicationController
     end
 
     def download
-        if @file_upload.permission == 'read-only' || @file_upload.user == current_user
+        if @file_upload.user == current_user || @file_upload.file_shares.exists?(user: current_user)
             send_file @file_upload.file.download, filename: @file_upload.name, disposition: 'attachment'
         else
             redirect_to file_uploads_path, alert: "You are not authorized to download this file."
