@@ -1,6 +1,6 @@
 class FileUploadsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_file_upload, only: [:destroy]
+    before_action :set_file_upload, only: [:destroy, :download]
   
     def index
         if current_user.admin?
@@ -31,6 +31,14 @@ class FileUploadsController < ApplicationController
             redirect_to file_uploads_path, notice: "File deleted successfully."
         else
             redirect_to file_uploads_path, alert: "Not authorized to delete this file"
+        end
+    end
+
+    def download
+        if @file_upload.user == current_user
+            send_file @file_upload.file.download, filename: @file_upload.name, disposition: 'attachment'
+        else
+            redirect_to file_uploads_path, alert: "You are not authorized to download this file."
         end
     end
   

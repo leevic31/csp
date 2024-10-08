@@ -18,6 +18,7 @@
     <% @file_uploads.each do |file_upload| %>
         <li>
             <%= file_upload.name %>
+            <%= link_to "Download", download_file_upload_path(file_upload) %>
             <% if current_user.admin? %>
                 <%= link_to "Delete", file_upload_path(file_upload), method: :delete, data: { confirm: "Are you sure?" } %>
             <% end %>
