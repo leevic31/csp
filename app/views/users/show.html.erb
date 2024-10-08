@@ -1,0 +1,14 @@
+<h1>Files for <%= @user.email %></h1>
+
+<% @folders.each do |folder| %>
+  <h2><%= folder.name %></h2>
+  <ul>
+    <% folder.file_uploads.each do |file_upload| %>
+      <li>
+        <%= file_upload.name %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= link_to "Back to Users", users_path %>

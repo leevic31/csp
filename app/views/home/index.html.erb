@@ -1,12 +1,16 @@
 <h1>CSP</h1>
 
 <% if user_signed_in? %>
+    <% if current_user.admin? %>
+        <%= link_to 'View Users', users_path %>
+    <% end %>
+
     <% if current_user.user? %>
         <%= link_to 'View Folders', folders_path %>
     <% end %>
 
     <% if current_user.guest? %>
-    <h2>Shared Files</h2>
+        <h2>Shared Files</h2>
         <ul>
             <% current_user.file_shares.includes(:file_upload).each do |file_share| %>
             <li>

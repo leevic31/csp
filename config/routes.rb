@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'users/index'
+  get 'users/show'
   get 'home/index'
   devise_for :users
   root "home#index"
@@ -21,5 +23,9 @@ Rails.application.routes.draw do
     end
   end
 
-  # resources :file_shares, only: [:create]
+  resources :users, only: [:index, :show] do
+    resources :folders, only: [:index] do
+      resources :file_uploads, only: [:index]
+    end
+  end
 end
