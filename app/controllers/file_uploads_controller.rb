@@ -1,13 +1,17 @@
 class FileUploadsController < ApplicationController
     before_action :authenticate_user!
-    before_action :set_file_upload, only: [:destroy, :download]
+    before_action :set_file_upload, only: [:destroy, :download, :update]
   
     def index
-        if current_user.admin?
-            @file_uploads = FileUpload.all
-        else
-            @file_uploads = current_user.file_uploads
-        end
+        @file_uploads = if current_user.admin?
+                            FileUpload.all
+                        elsif current_user.user?
+                            current_user.file_uploads + current_user.file_shares.includes(:file_upload).map(&:file_upload)
+                        elsif current_user.guest?
+                            current_user.file_shares.includes(:file_upload).map(&:file_upload)
+                        else
+                            []
+                        end
     end
   
     def create
@@ -42,9 +46,7 @@ class FileUploadsController < ApplicationController
         end
     end
 
-    def update
-        @file_upload = FileUpload.find(params[:id])
-        
+    def update        
         if @file_upload.user == current_user && @file_upload.update(file_upload_params)
             redirect_to file_uploads_path, notice: "File updated successfully."
         else
