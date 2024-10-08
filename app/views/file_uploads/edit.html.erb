@@ -1,0 +1,18 @@
+<%= form_with(model: @file_upload, local: true) do |form| %>
+    <div>
+        <%= form.label :name %>
+        <%= form.text_field :name %>
+    </div>
+    <div>
+        <%= form.label :file %>
+        <%= form.file_field :file %>
+    </div>
+    <div>
+        <%= form.label :permission %>
+        <%= form.select :permission, options_for_select([['Read Only', 'read-only'], ['Read Write', 'read-write']], selected: @file_upload.permission) %>
+    </div>
+    <div>
+        <%= form.submit "Update File" %>
+    </div>
+<% end %>
+  

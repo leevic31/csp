@@ -12,12 +12,12 @@ class FileUploadsController < ApplicationController
   
     def create
         if current_user.user?
-            @file_upload = current_user.file_uploads.new(file_upload_params)
+            @file_upload = current_user.file_uploads.build(file_upload_params)
 
             if @file_upload.save
                 redirect_to file_uploads_path, notice: "File uploaded successfully."
             else
-                render :index
+                render :new
             end
         else
             redirect_to file_uploads_path, alert: "Not authorized to upload this file"
@@ -26,7 +26,7 @@ class FileUploadsController < ApplicationController
     end
   
     def destroy
-        if current_user.user? && @file_upload.user == current_user 
+        if @file_upload.user == current_user 
             @file_upload.destroy
             redirect_to file_uploads_path, notice: "File deleted successfully."
         else
@@ -35,10 +35,20 @@ class FileUploadsController < ApplicationController
     end
 
     def download
-        if @file_upload.user == current_user
+        if @file_upload.permission == 'read-only' || @file_upload.user == current_user
             send_file @file_upload.file.download, filename: @file_upload.name, disposition: 'attachment'
         else
             redirect_to file_uploads_path, alert: "You are not authorized to download this file."
+        end
+    end
+
+    def update
+        @file_upload = FileUpload.find(params[:id])
+        
+        if @file_upload.user == current_user && @file_upload.update(file_upload_params)
+            redirect_to file_uploads_path, notice: "File updated successfully."
+        else
+            render :edit
         end
     end
   
@@ -49,6 +59,6 @@ class FileUploadsController < ApplicationController
     end
   
     def file_upload_params
-      params.require(:file_upload).permit(:file, :name)
+      params.require(:file_upload).permit(:file, :name, :permission)
     end
 end
