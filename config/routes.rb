@@ -28,6 +28,10 @@ Rails.application.routes.draw do
     resources :folders, only: [:index] do
       resources :file_uploads, only: [:index]
     end
+
+    member do
+      patch :update_role
+    end
   end
 
   resources :audit_logs, only: [:index]

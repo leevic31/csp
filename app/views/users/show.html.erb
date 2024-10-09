@@ -1,5 +1,17 @@
-<h1>Files for <%= @user.email %></h1>
+<h1><%= @user.email %></h1>
 
+<h2>Current Role: <%= @user.role%>
+<%= form_with(model: @user, url: update_role_user_path(@user), method: :patch) do |form| %>
+  <div>
+    <%= form.label :role %>
+    <%= form.select :role, options_for_select(['admin', 'user', 'guest'], @user.role) %>
+  </div>
+  <div>
+    <%= form.submit 'Update Role' %>
+  </div>
+<% end %>
+
+<h2>Folders</h2>
 <% @folders.each do |folder| %>
   <h2><%= folder.name %></h2>
   <ul>

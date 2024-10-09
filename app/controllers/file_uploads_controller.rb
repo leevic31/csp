@@ -54,7 +54,7 @@ class FileUploadsController < ApplicationController
 
     def update        
         if @file_upload.user == current_user && @file_upload.update(file_upload_params)
-            log_audit_action('permission update', 'FileUpload', @file_upload.id)
+            log_audit_action('file permission update', 'FileUpload', @file_upload.id)
             redirect_to folder_file_upload_path(@file_upload.folder, @file_upload), notice: "File updated successfully."        
         else
             render :show
