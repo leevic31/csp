@@ -24,6 +24,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :file_shares, only: [] do
+    member do
+      get 'download'
+    end
+  end
+
   resources :users, only: [:index, :show] do
     resources :folders, only: [:index] do
       resources :file_uploads, only: [:index]

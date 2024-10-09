@@ -18,7 +18,7 @@
             <% current_user.file_shares.includes(:file_upload).each do |file_share| %>
             <li>
                 <%= file_share.file_upload.name %>
-                <%= link_to 'Download', download_folder_file_upload_path(file_share.file_upload.folder, file_share.file_upload), method: :get %>
+                <%= link_to 'Download', download_file_share_path(file_share), method: :get %>
             </li>
             <% end %>
         </ul>
