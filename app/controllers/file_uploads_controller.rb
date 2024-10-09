@@ -28,12 +28,12 @@ class FileUploadsController < ApplicationController
 
             if @file_upload.save
                 log_audit_action('create', 'FileUpload', @file_upload.id)
-                redirect_to folder_file_uploads_path(@folder), notice: "File uploaded successfully."
+                redirect_to folder_path(@folder), notice: "File uploaded successfully."
             else
-                redirect_to folder_file_uploads_path(@folder), alert: "Unsuccessfully uploaded file"
+                redirect_to folder_path(@folder), alert: "Unsuccessfully uploaded file"
             end
         else
-            redirect_to folder_file_uploads_path(@folder), alert: "Not authorized to upload this file"
+            redirect_to folder_path(@folder), alert: "Not authorized to upload this file"
         end
     end
   
