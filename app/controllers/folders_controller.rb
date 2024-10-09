@@ -24,10 +24,19 @@ class FoldersController < ApplicationController
         @folder = Folder.find(params[:id])
         @file_uploads = @folder.file_uploads
     end
+
+    def update
+        @folder = current_user.folders.find(params[:id])
+        if @folder.update(folder_params)
+            redirect_to folder_path(@folder), notice: "Folder updated successfully."
+        else
+            render :edit
+        end
+    end
   
     private
   
     def folder_params
-        params.require(:folder).permit(:name)
+        params.require(:folder).permit(:name, :permission)
     end
 end

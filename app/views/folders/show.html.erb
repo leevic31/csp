@@ -1,4 +1,17 @@
 <h1><%= @folder.name %></h1>
+<h2>Permissions: <%= @folder.permission || "No specific permissions set" %></h2>
+
+<% if current_user.user? %>
+  <%= form_with(model: @folder, url: folder_path(@folder), method: :patch) do |form| %>
+    <div>
+      <%= form.label :permission %>
+      <%= form.select :permission, options_for_select(['read-only', 'read-write'], @folder.permission) %>
+    </div>
+    <div>
+      <%= form.submit "Update Permission" %>
+    </div>
+  <% end %>
+<% end %>
 
 <%= link_to "Upload File", new_folder_file_upload_path(@folder) %>
 
