@@ -27,4 +27,12 @@ class User < ApplicationRecord
   def guest?
     role == 'guest'
   end
+
+  def increment_failed_login_attempts
+    increment!(:failed_login_attempts)
+  end
+
+  def reset_failed_login_attempts
+    update(failed_login_attempts: 0)
+  end
 end
