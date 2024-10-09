@@ -27,7 +27,10 @@ class FoldersController < ApplicationController
 
     def update
         @folder = current_user.folders.find(params[:id])
+
         if @folder.update(folder_params)
+            log_audit_action('permission update', 'Folder', @folder.id)
+
             redirect_to folder_path(@folder), notice: "Folder updated successfully."
         else
             render :edit
