@@ -7,7 +7,7 @@ class FileUploadsController < ApplicationController
         @file_uploads = if current_user.admin?
                             FileUpload.all
                         elsif current_user.user?
-                            current_user.file_uploads + current_user.file_shares.includes(:file_upload).map(&:file_upload)
+                            current_user.file_uploads
                         elsif current_user.guest?
                             current_user.file_shares.includes(:file_upload).map(&:file_upload)
                         else
@@ -48,12 +48,8 @@ class FileUploadsController < ApplicationController
     end
 
     def download
-        if @file_upload.user == current_user || @file_upload.file_shares.exists?(user: current_user)
-            send_data @file_upload.file.download, filename: @file_upload.name, disposition: 'attachment'
-            log_audit_action('download', 'FileUpload', @file_upload.id)
-        else
-            redirect_to file_uploads_path, alert: "You are not authorized to download this file."
-        end
+        send_data @file_upload.file.download, filename: @file_upload.name, disposition: 'attachment'
+        log_audit_action('download', 'FileUpload', @file_upload.id)
     end
 
     def update        
@@ -72,7 +68,7 @@ class FileUploadsController < ApplicationController
     private
   
     def set_file_upload
-      @file_upload = current_user.file_uploads.find(params[:id])
+      @file_upload = FileUpload.find(params[:id])
     end
   
     def file_upload_params
