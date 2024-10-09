@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+```
+git clone https://github.com/leevic31/csp.git
 
-Things you may want to cover:
+cd csp
 
-* Ruby version
+docker-compose build
 
-* System dependencies
+docker-compose up
 
-* Configuration
+docker-compose run web rails db:migrate
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+docker-compose run web rails db:seed
+```
